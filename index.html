@@ -2,8 +2,18 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=1324" />
 <title>Aitane Pitch — 飯田橋クロスパートナーズ株式会社 御中</title>
+<script>
+/* Enable animations only when the browser can run them; otherwise the deck renders fully static */
+if ("IntersectionObserver" in window && "requestAnimationFrame" in window) {
+  document.documentElement.className += " js";
+}
+/* Safety net: if any script fails, fall back to the fully static (visible) deck */
+window.addEventListener("error", function () {
+  document.documentElement.className = document.documentElement.className.replace(/\bjs\b/, "");
+});
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -175,13 +185,13 @@
   .r-sam { width:252px; height:252px; bottom:0; background:#1c2534; border:1px solid #2c3a52; color:var(--text); }
   .r-som { width:148px; height:148px; bottom:0; background:var(--blue-deep); color:#fff; }
   .r-som .lab .amt { font-size: 24px; }
-  /* market rings: grow from the base, TAM -> SAM -> SOM */
-  .rings .ring {
+  /* market rings: grow from the base, TAM -> SAM -> SOM (hidden states only when JS is available) */
+  html.js .rings .ring {
     opacity: 0; transform: translateX(-50%) scale(0.5);
     transform-origin: 50% 100%;
     transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 1s cubic-bezier(0.22,1,0.36,1);
   }
-  .rings .ring .lab { opacity: 0; transition: opacity 0.6s ease; }
+  html.js .rings .ring .lab { opacity: 0; transition: opacity 0.6s ease; }
   .slide.on .rings .ring { opacity: 1; transform: translateX(-50%) scale(1); }
   .slide.on .rings .ring .lab { opacity: 1; }
   .slide.on .r-tam { transition-delay: 0.15s; } .slide.on .r-tam .lab { transition-delay: 0.55s; }
@@ -256,10 +266,11 @@
   .cover .sub { font-size: 15px; color: var(--text-sub); margin-top: 14px; letter-spacing: 0.04em; }
 
   /* ============ motion ============ */
-  .rv { opacity: 0; transform: translateY(26px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1); transition-delay: var(--d, 0s); }
+  /* reveal states are hidden only when JS is confirmed available (html.js), so the deck never renders blank */
+  html.js .rv { opacity: 0; transform: translateY(26px); transition: opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1); transition-delay: var(--d, 0s); }
   .slide.on .rv { opacity: 1; transform: none; }
   .chnum { transition: opacity 1.6s ease 0.2s; }
-  .slide:not(.on) .chnum { opacity: 0; }
+  html.js .slide:not(.on) .chnum { opacity: 0; }
   .slide.on .chnum { opacity: 0.04; }
   /* traction chart: animated via JS (see animateChart) */
 
@@ -791,7 +802,7 @@ const io = new IntersectionObserver((es)=>{
       if(e.target===chart.slide) chart.animate();
     }
   });
-},{threshold:0.35});
+},{threshold:0.2});
 document.querySelectorAll(".slide").forEach(s=>io.observe(s));
 
 /* ===== count-up (final values already in markup; animate only on screen) ===== */
