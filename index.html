@@ -56,7 +56,9 @@
   .slide.g-green { background: var(--grad-green); }
 
   /* vertical stripes (Figma hero: node 49:11 — pleated columns over dark bg) */
-  .stripes { position: absolute; inset: 0; pointer-events: none; display: flex; }
+  /* .slide isolates stacking so z-index:-1 stays above the slide bg but behind ALL text */
+  .slide { isolation: isolate; }
+  .stripes { position: absolute; inset: 0; pointer-events: none; display: flex; z-index: -1; }
   .stripes i {
     flex: 1;
     background: linear-gradient(140deg, rgba(255,255,255,0.065) 2%, rgba(255,255,255,0.02) 34%, rgba(0,0,0,0.5) 97%);
